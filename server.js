@@ -1,10 +1,13 @@
 const http = require('http');
+
+
 const {
   getProducts,
   getProduct,
   createProduct,
   updateProduct,
   deleteProduct,
+  getImage
 } = require('./controllers/productController');
 
 const server = http.createServer((req, res) => {
@@ -21,7 +24,10 @@ const server = http.createServer((req, res) => {
   } else if (req.url.match(/\/api\/products\/\w+/) && req.method === 'DELETE') {
     const id = req.url.split('/')[3];
     deleteProduct(req, res, id);
-  } else {
+  } else if (req.url.includes("images")){
+    getImage(req, res);
+  }
+  else {
     res.writeHead(404, { 'Content-Type': 'application/json' });
     res.end(
       JSON.stringify({

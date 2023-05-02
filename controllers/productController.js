@@ -1,4 +1,5 @@
 const Product = require('../models/productModel')
+const fs = require('fs');
 
 const { getPostData } = require('../utils')
 
@@ -111,10 +112,35 @@ async function deleteProduct(req, res, id) {
     }
 }
 
+// @desc    Gets Single Product
+// @route   GET /api/product/:id
+async function getImage(req, res) {
+    try {
+        /* const product = await Product.getImage()
+
+        if(!product) {
+            res.writeHead(404, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ message: 'Products Not Found' }))
+        } else {
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify(product))
+        } */
+        const img = fs.readFileSync('images/test.png');
+        res.writeHead(200, { 'Content-Type': 'image/gif',
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+        });
+        res.end(img, 'binary');
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 module.exports = {
     getProducts,
     getProduct,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getImage
 }
